@@ -64,6 +64,7 @@ const countries = [
 const SignUp = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0].code);
 
+    //SIGN UP FUNCTIONALITY START
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -98,7 +99,7 @@ const SignUp = () => {
          
           setLoading(false);
           setError(null);
-          navigate('/sign-in');
+          navigate('/sign-in')
         } catch (error) {
           setLoading(false);
           setError(error.message);
@@ -107,7 +108,7 @@ const SignUp = () => {
         
          
       };
- 
+ //SIGN UP FUNCTIONALITY END
 
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
