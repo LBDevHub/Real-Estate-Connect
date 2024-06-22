@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const countries = [
     { code: '+244', name: 'Angola' },
@@ -64,6 +64,51 @@ const countries = [
 const SignUp = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0].code);
 
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+      setFormData(
+        {
+          ...formData,
+          [e.target.id]:e.target.value,
+        });
+
+      };
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          setLoading(true);
+        const res = await fetch('/api/auth/signup',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body:JSON.stringify( formData),
+          });
+          const data =await res.json();
+          console.log(data);
+          if(data.success ===false) {
+            setLoading(false);
+            setError(data.message);
+            return;
+          }
+         
+          setLoading(false);
+          setError(null);
+          navigate('/sign-in');
+        } catch (error) {
+          setLoading(false);
+          setError(error.message);
+          
+        }
+        
+         
+      };
+ 
+
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
   };
@@ -75,19 +120,19 @@ const SignUp = () => {
           <h1 className="text-3xl font-bold text-center mb-4 flex items-center justify-center" style={{ color: '#293038' }}>
             Register <FaUserPlus className="ml-4" />
           </h1>
-          <form className="flex flex-col gap-4">
+          <form  onSubmit={handleSubmit}   className="flex flex-col gap-4">
             <input
               type="text"
               placeholder="Username"
               className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c69d33]"
-              id="username"
+              id="username"onChange={handleChange}
               required
             />
             <input
               type="email"
               placeholder="Email"
               className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c69d33]"
-              id="email"
+              id="email"onChange={handleChange}
               required
             />
             <div className="flex border rounded-lg overflow-hidden">
@@ -106,7 +151,7 @@ const SignUp = () => {
                 type="text"
                 placeholder="Phone"
                 className="p-3 flex-1 focus:outline-none focus:ring-2 focus:ring-[#c69d33]"
-                id="phone"
+                id="phone"onChange={handleChange}
                 required
               />
             </div>
@@ -114,19 +159,22 @@ const SignUp = () => {
               type="password"
               placeholder="Password"
               className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c69d33]"
-              id="password"
+              id="password"onChange={handleChange}
               required
             />
-            <button className="bg-[#c69d33] text-white p-3 rounded-lg uppercase hover:bg-[#293038] transition duration-300">
-              Register
+            <button disabled={loading} className="bg-[#c69d33] text-white p-3 rounded-lg uppercase hover:bg-[#293038] transition duration-300">
+              {loading ? 'Loading....' : 'Register'}
             </button>
           </form>
-          <div className='flex gap-2 mt-5'>
-            <p>Existing User ?</p>
-            <Link to='/sign-in'>
-                <span className='text-blue-900'>Sign In</span>
-            </Link>
-          </div>
+          <div className='flex flex-col gap-2 mt-5'>
+     <div className='flex gap-2'>
+         <p className='text-sm'>Existing User ?</p>
+          <Link to='/sign-in'>
+           <span className='text-blue-900'>Sign In</span>
+          </Link>
+     </div>
+       {error && <p className='text-sm text-red-500'>{error}</p>}
+      </div>
         </div>
         <div className="w-full md:w-1/2 flex items-center justify-center p-8" style={{ background: 'linear-gradient(to right, #293038, #293038)', color: 'white' }}>
           <div className="text-center">
@@ -139,6 +187,7 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };
