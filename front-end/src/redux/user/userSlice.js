@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 
 
@@ -16,12 +16,12 @@ const userSlice = createSlice({
         signInStart: (state) => {
             state.loading = true;
         },
-        signInSuccess: (state, action) => {
+        signInSuccess: ( state,action) => {
             state.currentUser = action.payload;
             state.loading = false;
             state.error = null;
         },
-        SignInFailure: (state, action) =>{
+        SignInFailure: (state,action) =>{
          state.error = action.payload;
          state.loading = false;
         }
