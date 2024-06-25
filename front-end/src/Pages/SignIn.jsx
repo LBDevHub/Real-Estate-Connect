@@ -3,6 +3,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, SignInFailure } from '../redux/user/userSlice';
+import OAuth from '../Component/OAuth';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -68,6 +69,7 @@ export default function SignIn() {
             <button disabled={loading} className="bg-[#c69d33] text-white p-3 rounded-lg uppercase hover:bg-[#293038] transition duration-300">
               {loading ? 'Loading....' : 'Sign In'}
             </button>
+             <OAuth/>
           </form>
           <div className='flex flex-col gap-2 mt-5'>
             <div className='flex gap-2'>

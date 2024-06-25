@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import OAuth from '../Component/OAuth';
 
 const countries = [
     { code: '+244', name: 'Angola' },
@@ -166,6 +167,7 @@ const SignUp = () => {
             <button disabled={loading} className="bg-[#c69d33] text-white p-3 rounded-lg uppercase hover:bg-[#293038] transition duration-300">
               {loading ? 'Loading....' : 'Register'}
             </button>
+            <OAuth/>
           </form>
           <div className='flex flex-col gap-2 mt-5'>
      <div className='flex gap-2'>
